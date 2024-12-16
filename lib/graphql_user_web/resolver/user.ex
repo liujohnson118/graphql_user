@@ -15,7 +15,8 @@ defmodule GraphqlUserWeb.Resolver.User do
     GraphqlUserWeb.User.update(id, Map.delete(params, :id))
   end
 
-  def update_user_preferences(%{user_id: id} = params, _) do
-    GraphqlUserWeb.User.update_user_preferences(id, Map.delete(params, :id))
+  def update_user_preferences(params, _) do
+
+    GraphqlUserWeb.User.update_user_preferences(Map.get(params, :user_id), params)
   end
 end

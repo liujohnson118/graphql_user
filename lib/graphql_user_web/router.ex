@@ -13,7 +13,8 @@ defmodule GraphqlUserWeb.Router do
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
       schema: GraphqlUserWeb.Schema,
-      interface: :playground
+      interface: :playground,
+      socket: GraphqlUserWeb.Sockets.UserSocket
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

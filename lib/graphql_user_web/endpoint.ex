@@ -1,5 +1,6 @@
 defmodule GraphqlUserWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :graphql_user
+  use Absinthe.Phoenix.Endpoint
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -10,6 +11,10 @@ defmodule GraphqlUserWeb.Endpoint do
     signing_salt: "5aK6Xv/1",
     same_site: "Lax"
   ]
+
+  socket "/socket", GraphqlUserWeb.Sockets.UserSocket,
+    websocket: true,
+    longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],

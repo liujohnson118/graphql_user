@@ -16,7 +16,8 @@ defmodule GraphqlUser.Application do
       # Start a worker by calling: GraphqlUser.Worker.start_link(arg)
       # {GraphqlUser.Worker, arg},
       # Start to serve requests, typically the last entry
-      GraphqlUserWeb.Endpoint
+      GraphqlUserWeb.Endpoint,
+      {Absinthe.Subscription, GraphqlUserWeb.Endpoint}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

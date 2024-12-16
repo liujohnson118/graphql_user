@@ -37,15 +37,15 @@ defmodule GraphqlUserWeb.User do
     }
   }]
 
+  def all(params) when map_size(params) == 0 do
+    {:ok, @users}
+  end
+
   def all(params) do
-    likes_emails = Map.get(params, :likes_emails, nil)
-    likes_phone_calls = Map.get(params, :likes_phone_calls, nil)
-    likes_faxes = Map.get(params, :likes_faxes, nil)
     case Enum.filter(@users, fn user ->
-      preferences = user.preferences
-      preferences[:likes_emails] === likes_emails &&
-      preferences[:likes_phone_calls] === likes_phone_calls &&
-      preferences[:likes_faxes] === likes_faxes
+      Enum.all?(params, fn {key, value} ->
+        Map.get(user.preferences, key) == value
+      end)
     end) do
       [] -> {:error, %{message: "not found", details: %{params: params}}}
       users -> {:ok, users}

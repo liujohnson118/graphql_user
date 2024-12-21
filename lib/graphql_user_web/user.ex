@@ -37,14 +37,14 @@ defmodule GraphqlUserWeb.User do
     }
   }]
 
-  def all(params) when map_size(params) == 0 do
+  def all(params) when map_size(params) === 0 do
     {:ok, @users}
   end
 
   def all(params) do
     case Enum.filter(@users, fn user ->
       Enum.all?(params, fn {key, value} ->
-        Map.get(user.preferences, key) == value
+        Map.get(user.preferences, key) === value
       end)
     end) do
       [] -> {:error, %{message: "not found", details: %{params: params}}}

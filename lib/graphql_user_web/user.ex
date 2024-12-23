@@ -72,7 +72,7 @@ defmodule GraphqlUserWeb.User do
 
   def update_user_preferences(id, params) do
     case find(%{id: id}) do
-      nil -> {:error, %{message: "not found", details: %{id: id}}}
+      {:error, error} -> {:error, error}
       _user -> {:ok, params}
     end
   end

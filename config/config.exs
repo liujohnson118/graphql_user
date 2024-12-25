@@ -7,6 +7,10 @@
 # General application configuration
 import Config
 
+config :graphql_user, GraphqlUser.Repo,
+  database: "graphql_user_repo",
+  username: "postgres"
+
 config :graphql_user,
   generators: [timestamp_type: :utc_datetime]
 
@@ -29,6 +33,9 @@ config :graphql_user, GraphqlUserWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :graphql_user, GraphqlUser.Mailer, adapter: Swoosh.Adapters.Local
+
+config :graphql_user,
+  ecto_repos: [GraphqlUser.Repo]
 
 # Configure esbuild (the version is required)
 config :esbuild,

@@ -3,7 +3,7 @@ defmodule GraphqlUserWeb.User do
     id: 1,
     name: "Bill",
     email: "bill@gmail.com",
-    preferences: %{
+    preference: %{
       likes_emails: false,
       likes_phone_calls: true,
       likes_faxes: true
@@ -12,7 +12,7 @@ defmodule GraphqlUserWeb.User do
     id: 2,
     name: "Alice",
     email: "alice@gmail.com",
-    preferences: %{
+    preference: %{
       likes_emails: true,
       likes_phone_calls: false,
       likes_faxes: true
@@ -21,7 +21,7 @@ defmodule GraphqlUserWeb.User do
     id: 3,
     name: "Jill",
     email: "jill@hotmail.com",
-    preferences: %{
+    preference: %{
       likes_emails: true,
       likes_phone_calls: true,
       likes_faxes: false
@@ -30,7 +30,7 @@ defmodule GraphqlUserWeb.User do
     id: 4,
     name: "Tim",
     email: "tim@gmail.com",
-    preferences: %{
+    preference: %{
       likes_emails: false,
       likes_phone_calls: false,
       likes_faxes: false
@@ -44,7 +44,7 @@ defmodule GraphqlUserWeb.User do
   def all(params) do
     case Enum.filter(@users, fn user ->
       Enum.all?(params, fn {key, value} ->
-        Map.get(user.preferences, key) === value
+        Map.get(user.preference, key) === value
       end)
     end) do
       [] -> {:error, %{message: "not found", details: %{params: params}}}
@@ -70,7 +70,7 @@ defmodule GraphqlUserWeb.User do
     end
   end
 
-  def update_user_preferences(id, params) do
+  def update_user_preference(id, params) do
     case find(%{id: id}) do
       {:error, error} -> {:error, error}
       _user -> {:ok, params}

@@ -1,4 +1,5 @@
 defmodule GraphqlUserWeb.Schema do
+  alias Absinthe.Phase.Document.Arguments.Data
   use Absinthe.Schema
 
   import_types GraphqlUserWeb.Types.User
@@ -16,5 +17,15 @@ defmodule GraphqlUserWeb.Schema do
 
   subscription do
     import_fields :user_subscriptions
+  end
+
+  def context(ctx) do
+    source = Dataloader.Ecto.new(GraphqlUser.Repo)
+    dataloader = Dataloader.add_source(Dataloader.new, GraphqlUser.Accounts, source)
+    Map.put(ctx, :loader, dataloader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
   end
 end

@@ -8,6 +8,7 @@ defmodule GraphqlUser.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      GraphqlUser.Repo,
       GraphqlUserWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:graphql_user, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GraphqlUser.PubSub},

@@ -1,16 +1,18 @@
 defmodule GraphqlUserWeb.Types.User do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 2]
 
   @desc "User subscription preference settings"
-  object :preferences do
+  object :preference do
     field :likes_emails, :boolean
     field :likes_phone_calls, :boolean
     field :likes_faxes, :boolean
     field :user_id, :id
+    field :id, :id
   end
 
-  @desc "Input for user subscription preferences"
-  input_object :preferences_input do
+  @desc "Input for user subscription preference"
+  input_object :preference_input do
     field :likes_emails, :boolean
     field :likes_phone_calls, :boolean
     field :likes_faxes, :boolean
@@ -20,6 +22,6 @@ defmodule GraphqlUserWeb.Types.User do
     field :id, :id
     field :name, :string
     field :email, :string
-    field :preferences, :preferences
+    field :preference, :preference, resolve: dataloader(GraphqlUser.Accounts, :preference)
   end
 end

@@ -43,6 +43,7 @@ defmodule GraphqlUser.MixProject do
        app: false,
        compile: false,
        depth: 1},
+      {:dataloader, "~> 1.0"},
       {:swoosh, "~> 1.5"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
@@ -54,7 +55,9 @@ defmodule GraphqlUser.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
-      {:absinthe_phoenix, "~> 2.0.0"}
+      {:absinthe_phoenix, "~> 2.0.0"},
+      {:ecto_sql, "~> 3.7"},
+      {:postgrex, ">= 0.0.0"}
     ]
   end
 

@@ -1,22 +1,19 @@
 defmodule GraphqlUserWeb.Resolver.User do
+  alias GraphqlUser.Accounts
+
   def all(params) do
-    GraphqlUserWeb.User.all(params)
+    Accounts.get_users()
   end
 
   def find(%{id: id}) do
-    GraphqlUserWeb.User.find(%{id: id})
+    Accounts.get_user(id)
   end
 
   def create(params, _) do
-    GraphqlUserWeb.User.create(params)
+    Accounts.create_user(params)
   end
 
   def update(%{id: id} = params, _) do
-    GraphqlUserWeb.User.update(id, Map.delete(params, :id))
-  end
-
-  def update_user_preferences(params, _) do
-
-    GraphqlUserWeb.User.update_user_preferences(Map.get(params, :user_id), params)
+    Accounts.update_user(id, Map.delete(params, :id))
   end
 end

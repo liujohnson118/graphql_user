@@ -37,6 +37,8 @@ config :graphql_user, GraphqlUser.Mailer, adapter: Swoosh.Adapters.Local
 config :graphql_user,
   ecto_repos: [GraphqlUser.Repo]
 
+config :ecto_shorts, repo: GraphqlUser.Repo, error_module: EctoShorts.ErrorModule.Actions
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

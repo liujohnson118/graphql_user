@@ -1,11 +1,10 @@
 defmodule GraphqlUser.Accounts do
   alias GraphqlUser.Accounts.{User, Preference}
   alias GraphqlUser.Repo
+  alias EctoShorts.Actions
 
   def create_user(attrs) do
-    %User{}
-      |> User.changeset(attrs)
-      |> Repo.insert()
+    Actions.create(User, attrs)
   end
 
   def get_user(id) do
@@ -24,21 +23,12 @@ defmodule GraphqlUser.Accounts do
   end
 
   def get_users do
-    {:ok, Repo.all(User)}
-  end
-
-  def create_preference(user, attrs) do
-    %Preference{}
-      |> Preference.changeset(attrs)
-      |> Ecto.Changeset.put_assoc(:user, user)
-      |> Repo.insert()
+    {:ok, Actions.all(User)}
   end
 
   def update_preference(id, attrs) do
     with {:ok, preference} <- get_preference(id) do
-      preference
-        |> Preference.changeset(attrs)
-        |> Repo.update()
+      Actions.update(Preference, id, attrs)
     end
   end
 

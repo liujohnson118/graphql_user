@@ -57,7 +57,8 @@ defmodule GraphqlUser.MixProject do
       {:absinthe_plug, "~> 1.5"},
       {:absinthe_phoenix, "~> 2.0.0"},
       {:ecto_sql, "~> 3.7"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:ecto_shorts, "~> 2.3"}
     ]
   end
 

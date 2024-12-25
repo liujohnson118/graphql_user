@@ -34,9 +34,18 @@ defmodule GraphqlUser.Accounts do
       |> Repo.insert()
   end
 
-  def update_preference(preference, attrs) do
-    preference
-      |> Preference.changeset(attrs)
-      |> Repo.update()
+  def update_preference(id, attrs) do
+    with {:ok, preference} <- get_preference(id) do
+      preference
+        |> Preference.changeset(attrs)
+        |> Repo.update()
+    end
+  end
+
+  defp get_preference(id) do
+    case Repo.get(Preference, id) do
+      nil -> {:error, "Preference with #{id} not found"}
+      preference -> {:ok, preference}
+    end
   end
 end

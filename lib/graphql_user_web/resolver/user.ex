@@ -2,7 +2,7 @@ defmodule GraphqlUserWeb.Resolver.User do
   alias GraphqlUser.Accounts
 
   def all(params) do
-    Accounts.get_users()
+    Accounts.get_users(params)
   end
 
   def find(%{id: id}) do

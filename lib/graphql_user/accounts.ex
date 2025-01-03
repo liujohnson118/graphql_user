@@ -22,12 +22,12 @@ defmodule GraphqlUser.Accounts do
     end
   end
 
-  def get_users do
-    {:ok, Actions.all(User)}
+  def get_users(params) do
+    {:ok, filter_users_by_preferences(params)}
   end
 
   def update_preference(id, attrs) do
-    with {:ok, preference} <- get_preference(id) do
+    with {:ok, _preference} <- get_preference(id) do
       Actions.update(Preference, id, attrs)
     end
   end
@@ -37,5 +37,22 @@ defmodule GraphqlUser.Accounts do
       nil -> {:error, "Preference with #{id} not found"}
       preference -> {:ok, preference}
     end
+  end
+
+  def filter_users_by_preferences(params) do
+    filter = params
+      |> pagination_filter()
+      |> Map.put(:preference, preferences_filter(params))
+    Actions.all(User, filter)
+  end
+
+  defp preferences_filter(params) do
+    preference_keys = [:likes_emails, :likes_phone_calls, :likes_faxes]
+    Map.take(params, preference_keys)
+  end
+
+  defp pagination_filter(params) do
+    pagination_keys = [:before, :after, :first]
+    Map.take(params, pagination_keys)
   end
 end

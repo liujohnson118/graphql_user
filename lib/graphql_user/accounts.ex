@@ -41,18 +41,15 @@ defmodule GraphqlUser.Accounts do
 
   def filter_users_by_preferences(params) do
     filter = params
-      |> pagination_filter()
-      |> Map.put(:preference, preferences_filter(params))
-    Actions.all(User, filter)
+      |> preferences_filter()
+      |> Map.put(:preload, [:user])
+    preferences = Actions.all(Preference, filter)
+    users = Enum.map(preferences, & &1.user)
+    Repo.preload(users, :preference)
   end
 
   defp preferences_filter(params) do
-    preference_keys = [:likes_emails, :likes_phone_calls, :likes_faxes]
-    Map.take(params, preference_keys)
-  end
-
-  defp pagination_filter(params) do
-    pagination_keys = [:before, :after, :first]
-    Map.take(params, pagination_keys)
+    filter_keys = [:likes_emails, :likes_phone_calls, :likes_faxes, :before, :after, :first]
+    Map.take(params, filter_keys)
   end
 end

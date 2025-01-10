@@ -6,8 +6,9 @@ defmodule GraphqlUser.ResolverHitsAgent do
     Agent.start_link(fn -> initial_state end, name: __MODULE__)
   end
 
-  def get_users_count do
-    Agent.get(__MODULE__, & &1[:create_user])
+  def get(key) do
+    key = String.to_atom(key)
+    Agent.get(__MODULE__, & &1[key])
   end
 
   def add_user do

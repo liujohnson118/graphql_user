@@ -5,8 +5,10 @@ defmodule GraphqlUserWeb.Schema.Queries.ResolverHit do
 
   object :resolver_hit_queries do
     field :resolver_hits, :integer do
-      resolve fn _, _ ->
-        {:ok, ResolverHitsAgent.get_users_count}
+      arg :key, non_null(:string)
+
+      resolve fn params, _ ->
+        {:ok, ResolverHitsAgent.get(params.key)}
       end
     end
   end

@@ -1,10 +1,16 @@
 defmodule GraphqlUser.Accounts do
+  alias EctoShorts.Actions
   alias GraphqlUser.Accounts.{User, Preference}
   alias GraphqlUser.Repo
-  alias EctoShorts.Actions
+  alias GraphqlUser.ResolverHitsAgent
 
   def create_user(attrs) do
-    Actions.create(User, attrs)
+    case Actions.create(User, attrs) do
+      {:ok, user} ->
+        ResolverHitsAgent.add_user
+        {:ok, user}
+      {:error, changeset} -> {:error, "User not created. Changeset: #{changeset.errors}"}
+    end
   end
 
   def get_user(id) do

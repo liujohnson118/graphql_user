@@ -1,5 +1,6 @@
 defmodule GraphqlUserWeb.Resolver.User do
   alias GraphqlUser.Accounts
+  alias GraphqlUser.ResolverHitsAgent
 
   def all(params) do
     Accounts.get_users(params)

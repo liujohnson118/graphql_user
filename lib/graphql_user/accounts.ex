@@ -1,4 +1,6 @@
 defmodule GraphqlUser.Accounts do
+  import Ecto.Query
+
   alias EctoShorts.Actions
   alias GraphqlUser.Accounts.{User, Preference}
   alias GraphqlUser.Repo
@@ -47,11 +49,14 @@ defmodule GraphqlUser.Accounts do
 
   def filter_users_by_preferences(params) do
     preferences_filter = params |> preferences_filter()
-    preferences = Actions.all(Preference, preferences_filter)
-    user_ids = Enum.map(preferences, & &1.user_id) |> Enum.uniq()
+    query =
+      from u in User,
+        join: p in assoc(u, :preference),
+        where: ^build_preferences_conditions(preferences_filter),
+        select: u
     pagination_filter = params |> pagination_filter()
-    users_filter = Map.merge(pagination_filter, %{id: user_ids, preload: [:preference]})
-    Actions.all(User, users_filter)
+
+    Actions.all(query, pagination_filter)
   end
 
   defp preferences_filter(params) do
@@ -62,5 +67,11 @@ defmodule GraphqlUser.Accounts do
   defp pagination_filter(params) do
     filter_keys = [:before, :after, :first]
     Map.take(params, filter_keys)
+  end
+
+  defp build_preferences_conditions(preference_params) do
+    Enum.reduce(preference_params, true, fn {key, value}, acc ->
+      dynamic([_, p], field(p, ^key) == ^value and ^acc)
+    end)
   end
 end

@@ -15,7 +15,7 @@ defmodule GraphqlUser.Accounts do
 
   def get_user(id) do
     case Repo.get(User, id) do
-      nil -> {:error, "User with #{id} not found"}
+      nil -> {:error, "User with id #{id} not found"}
       user -> {:ok, user}
     end
   end

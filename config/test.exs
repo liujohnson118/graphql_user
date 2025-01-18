@@ -18,3 +18,11 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :graphql_user, GraphqlUser.Repo,
+  username: "postgres",       # Update with your database username
+  password: "postgres",       # Update with your database password
+  database: "graphql_user_test",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox,
+  pool_size: 10

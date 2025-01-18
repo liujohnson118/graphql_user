@@ -21,6 +21,7 @@ defmodule GraphqlUserWeb.Schema.Queries.User do
       arg :first, :integer
 
       resolve fn params, _ ->
+        IO.inspect(params)
         Resolver.User.all(params)
       end
     end

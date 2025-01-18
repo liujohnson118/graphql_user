@@ -1,6 +1,5 @@
 defmodule GraphqlUserWeb.Schema.Queries.UserTest do
   use GraphqlUserWeb.DataCase, async: true
-  #use Absinthe.Plug.Test
 
   alias GraphqlUserWeb.Schema
   alias GraphqlUser.Factory

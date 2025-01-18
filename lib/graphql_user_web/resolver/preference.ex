@@ -3,9 +3,6 @@ defmodule GraphqlUserWeb.Resolver.Preference do
   alias GraphqlUser.Accounts.Preference
   alias GraphqlUser.Repo
 
-  def update(%{id: id} = params, _) do
-    Accounts.update_preference(id, Map.delete(params, :id))
-  end
 
   def update_user_preference(%{user_id: user_id} = params, _) do
     preference_id = Repo.get_by(Preference, user_id: user_id).id

@@ -29,7 +29,10 @@ defmodule GraphqlUser.Accounts do
   end
 
   def get_users(params) do
-    {:ok, User.filter_users_by_preferences(params)}
+    query = User.users_by_preference_query(params)
+    pagination_filter = User.pagination_filter(params)
+    users = Actions.all(query, pagination_filter)
+    {:ok, users}
   end
 
   def update_preference(id, attrs) do

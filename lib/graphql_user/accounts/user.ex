@@ -5,7 +5,6 @@ defmodule GraphqlUser.Accounts.User do
   use Ecto.Schema
 
   alias GraphqlUser.Accounts.User
-  alias EctoShorts.Actions
 
   schema "users" do
     field :name, :string
@@ -24,25 +23,20 @@ defmodule GraphqlUser.Accounts.User do
       |> cast_assoc(:preference)
   end
 
-  def filter_users_by_preferences(params) do
-    preferences_filter = params |> preferences_filter()
-    query =
-      from u in User,
-        join: p in assoc(u, :preference),
-        where: ^build_preferences_conditions(preferences_filter),
-        select: u
-    pagination_filter = params |> pagination_filter()
+  def users_by_preference_query(params) do
+    from u in User,
+      join: p in assoc(u, :preference),
+      where: ^build_preferences_conditions(params |> preferences_filter()),
+      select: u
+  end
 
-    Actions.all(query, pagination_filter)
+  def pagination_filter(params) do
+    filter_keys = [:before, :after, :first]
+    Map.take(params, filter_keys)
   end
 
   defp preferences_filter(params) do
     filter_keys = [:likes_emails, :likes_phone_calls, :likes_faxes]
-    Map.take(params, filter_keys)
-  end
-
-  defp pagination_filter(params) do
-    filter_keys = [:before, :after, :first]
     Map.take(params, filter_keys)
   end
 

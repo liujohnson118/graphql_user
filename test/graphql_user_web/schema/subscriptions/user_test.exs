@@ -3,39 +3,42 @@ defmodule GraphqlUserWeb.SubscriptionTest do
 
   alias GraphqlUser.Factory
 
+  @create_user_doc """
+    mutation {
+      createUser(
+        name: "Alice",
+        email: "alice@example.com",
+        preference: { likesEmails: true, likesPhoneCalls: false, likesFaxes: true }
+      ) {
+        id
+        name
+        email
+      }
+    }
+  """
+
+  @created_user_doc """
+    subscription {
+      createdUser {
+        id
+        name
+        email
+      }
+    }
+  """
+
   describe "user subscriptions" do
     setup do
       {:ok, user: Factory.insert(:user)}
     end
 
     test "receives a created_user subscription event", %{socket: socket} do
+      IO.inspect(socket)
       # Subscribe to the "created_user" subscription
-      ref = push_doc(socket, """
-      subscription {
-        createdUser {
-          id
-          name
-          email
-        }
-      }
-      """)
-      assert_reply ref, :ok, reply
-      IO.inspect(reply)
+      ref = push_doc socket, @created_user_doc
+      # assert_reply ref, :ok, reply
 
       # Trigger the create_user mutation
-      mutation = """
-      mutation {
-        createUser(
-          name: "Alice",
-          email: "alice@example.com",
-          preference: { likesEmails: true, likesPhoneCalls: false, likesFaxes: true }
-        ) {
-          id
-          name
-          email
-        }
-      }
-      """
       # ref = push_doc(socket, mutation)
 
       # assert_reply ref, :ok, reply

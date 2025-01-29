@@ -8,8 +8,8 @@ defmodule GraphqlUserWeb.SubscriptionCase do
       use Absinthe.Phoenix.SubscriptionTest,
        schema: GraphqlUserWeb.Schema
       setup tags do
-        {:ok, socket} = Phoenix.ChannelTest.connect(GraphqlUserWeb.Endpoint, %{})
-        {:ok, socket: Absinthe.Phoenix.SubscriptionTest.join_absinthe(socket)}
+        {:ok, socket} = Phoenix.ChannelTest.connect(GraphqlUserWeb.Sockets.UserSocket, %{})
+        {:ok, socket} = Absinthe.Phoenix.SubscriptionTest.join_absinthe(socket)
         {:ok, %{socket: socket}}
       end
     end
